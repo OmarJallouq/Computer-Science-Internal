@@ -18,7 +18,7 @@ public class LogInFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        TitleLabel.setText("Car Rental Teezo Log In Here");
+        TitleLabel.setText("Car Rental Program Log In Here");
         TitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TitleLabel.setFont(new java.awt.Font("Ariel", 1, 18));
 
