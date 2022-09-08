@@ -44,8 +44,6 @@ public class AddRental extends  javax.swing.JFrame {
         NotesLabel = new JLabel();
         TitleLabel = new JLabel();
         CustomerPresetLabel = new JLabel();
-        RentalDateLabel = new JLabel();
-        RentalReturnLabel = new JLabel();
         EmployeeLabel = new JLabel();
         RentalTypeTF = new JComboBox<>();
         NotesTF = new JTextArea();
@@ -67,7 +65,7 @@ public class AddRental extends  javax.swing.JFrame {
         EmployeeList.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         
         JScrollPane EmployeeTF = new JScrollPane(EmployeeList);
-        EmployeeList.setVisibleRowCount(4);
+        EmployeeList.setVisibleRowCount(9);
 
         NotesLabel.setText("Notes:  ");
 
@@ -112,19 +110,20 @@ public class AddRental extends  javax.swing.JFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(CustomerPresetLabel)
                             .addComponent(CustomerPresetTF)
-                            .addComponent(CreateNewPresetBtn)
-                        )
+                            .addComponent(CreateNewPresetBtn))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(RentalTypeLabel)
-                            .addComponent(RentalTypeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(EmployeeLabel)
-                            .addComponent(EmployeeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(NotesLabel)
-                            .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                .addComponent(RentalTypeLabel)
+                                .addComponent(RentalTypeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(NotesLabel)
+                                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                .addComponent(EmployeeLabel)    
+                                .addComponent(EmployeeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(AddItemBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))));
+                            .addComponent(CancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(23, Short.MAX_VALUE)));
         layout.setVerticalGroup(
             layout.createParallelGroup(Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -136,15 +135,16 @@ public class AddRental extends  javax.swing.JFrame {
                         .addComponent(CustomerPresetTF)
                         .addComponent(CreateNewPresetBtn))
                     .addGap(18,18,18)
-                    .addGroup(layout.createParallelGroup()
+                    .addGroup(layout.createParallelGroup(Alignment.LEADING)
                         .addComponent(RentalTypeLabel)
-                        .addComponent(RentalTypeTF)
-                        .addComponent(EmployeeLabel)
-                        .addComponent(EmployeeTF))
-                    .addGap(18,18,18)
+                        .addComponent(EmployeeLabel))
                     .addGroup(layout.createParallelGroup()
-                        .addComponent(NotesLabel)
-                        .addComponent(jScrollPane))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(RentalTypeTF)
+                            .addGap(18,18,18)
+                            .addComponent(NotesLabel)
+                            .addComponent(jScrollPane))
+                        .addComponent(EmployeeTF))
                     .addGap(18,18,18)
                     .addGroup(layout.createParallelGroup()
                         .addComponent(AddItemBtn)
@@ -234,8 +234,6 @@ public class AddRental extends  javax.swing.JFrame {
     private JLabel TitleLabel;
     private JLabel CustomerPresetLabel;
     private JLabel EmployeeLabel;
-    private JLabel RentalDateLabel;
-    private JLabel RentalReturnLabel;
     private JComboBox<String> RentalTypeTF;
     private JTextArea NotesTF;
     private JComboBox<String> CustomerPresetTF;
