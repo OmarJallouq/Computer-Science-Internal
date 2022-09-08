@@ -275,4 +275,84 @@ class DBMethods {
             return 0;
         }
     }
+
+    public static ResultSet getAllCustomer(){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer");
+            ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int addCustomerRecord(int id, String FirstName, String LastName, String Email, int PhoneNumber){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO customer VALUES(?,?,?,?,?)");
+            stmt.setInt(1, id);
+            stmt.setString(2,FirstName);
+            stmt.setString(3,LastName);
+            stmt.setString(4,Email);
+            stmt.setInt(5,PhoneNumber);
+            int n = stmt.executeUpdate();
+            return n;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getCustomerMaxID(){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT max(id) FROM customer");
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int getRentalMaxID(){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT max(id) FROM rental");
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int addRentalRecord(int id, int CustomerID, String RentalType, Date RentalDate, Date ReturnDate, String Note){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO rental VALUES(?,?,?,?,?,?)");
+            stmt.setInt(1, id);
+            stmt.setInt(2,CustomerID);
+            stmt.setString(3,RentalType);
+            stmt.setDate(4,RentalDate);
+            stmt.setDate(5,ReturnDate);
+            stmt.setString(6,Note);
+            int n = stmt.executeUpdate();
+            return n;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }

@@ -114,7 +114,7 @@ public class AdminRentalFrame extends javax.swing.JFrame {
     }
 
     private void AddRentalActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Add Rental Clicked");
+        new AddRental().setVisible(true);
     }
 
     private void ModifyRentalActionPerformed(java.awt.event.ActionEvent evt) {

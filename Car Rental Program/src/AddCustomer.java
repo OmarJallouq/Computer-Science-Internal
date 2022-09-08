@@ -1,52 +1,47 @@
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 
-public class AddCar extends  javax.swing.JFrame {
+public class AddCustomer extends  javax.swing.JFrame {
     
-    public AddCar() {
+    public AddCustomer() {
         initComponents();
-        int itemid = DBMethods.getCarMaxID() + 1;
+        int itemid = DBMethods.getCustomerMaxID() + 1;
         ItemNumberTF.setText(String.valueOf(itemid));
     }
 
     private void initComponents() {
 
         ItemNumberLabel = new JLabel();
-        BrandLabel = new JLabel();
-        YearLabel = new JLabel();
-        ColorLabel = new JLabel();
+        FNameLabel = new JLabel();
+        LNameLabel = new JLabel();
+        EmailLabel = new JLabel();
         TitleLabel = new JLabel();
+        PhoneNumberLabel = new JLabel();
         ItemNumberTF = new JTextField();
-        BrandTF = new JTextField();
-        YearTF = new JTextField();
-        ColorTF = new JComboBox<>();
+        FNameTF = new JTextField();
+        LNameTF = new JTextField();
+        EmailTF = new JTextField();
+        PhoneNumberTF = new JTextField();
         AddItemBtn = new JButton();
         CancelBtn = new JButton();
 
         TitleLabel.setFont(new java.awt.Font("Ariel", 1, 14));
-        TitleLabel.setText("Add New Car Preset");
+        TitleLabel.setText("Add New Customer");
 
         ItemNumberLabel.setText("Item Number:  ");
 
         ItemNumberTF.setEditable(false);
 
-        BrandLabel.setText("Brand:  ");
+        FNameLabel.setText("First Name:  ");
 
-        YearLabel.setText("Year:  ");
+        LNameLabel.setText("Last Name:  ");
 
-        ColorLabel.setText("Color:  ");
+        EmailLabel.setText("Email:  ");
 
-        ColorTF.addItem("White");
-        ColorTF.addItem("Black");
-        ColorTF.addItem("Gray");
-        ColorTF.addItem("Silver");
-        ColorTF.addItem("Red");
-        ColorTF.addItem("Blue");
-        ColorTF.addItem("Other");
+        PhoneNumberLabel.setText("Phone Number:   ");
 
         AddItemBtn.setText("Add Item");
         AddItemBtn.addActionListener(new java.awt.event.ActionListener(){
@@ -80,12 +75,15 @@ public class AddCar extends  javax.swing.JFrame {
                             .addComponent(ItemNumberLabel)
                             .addComponent(ItemNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(BrandLabel)
-                            .addComponent(BrandTF, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(YearLabel)
-                            .addComponent(YearTF, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ColorLabel)
-                            .addComponent(ColorTF, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(FNameLabel)
+                            .addComponent(FNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LNameLabel)
+                            .addComponent(LNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(EmailLabel)
+                            .addComponent(EmailTF, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PhoneNumberLabel)
+                            .addComponent(PhoneNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(AddItemBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(CancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -101,12 +99,16 @@ public class AddCar extends  javax.swing.JFrame {
                         .addComponent(ItemNumberTF))
                     .addGap(9,9,9)
                     .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                        .addComponent(BrandLabel)
-                        .addComponent(BrandTF)
-                        .addComponent(YearLabel)
-                        .addComponent(YearTF)
-                        .addComponent(ColorLabel)
-                        .addComponent(ColorTF))
+                        .addComponent(FNameLabel)
+                        .addComponent(FNameTF)
+                        .addComponent(LNameLabel)
+                        .addComponent(LNameTF))
+                    .addGap(9,9,9)
+                    .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                        .addComponent(EmailLabel)
+                        .addComponent(EmailTF)
+                        .addComponent(PhoneNumberLabel)
+                        .addComponent(PhoneNumberTF))
                     .addGap(9,9,9)
                     .addGroup(layout.createParallelGroup()
                         .addComponent(AddItemBtn)
@@ -117,47 +119,57 @@ public class AddCar extends  javax.swing.JFrame {
     }
     
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt){
-        if(BrandTF.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "'Brand' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        if(FNameTF.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "'First Name' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if(LNameTF.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "'Last Name' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if(EmailTF.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this, "'Email' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
         else{
             try{
                 int id = Integer.parseInt(ItemNumberTF.getText());
-                String brand = BrandTF.getText();
-                int year = Integer.parseInt(YearTF.getText());
-                String color = this.ColorTF.getItemAt(this.ColorTF.getSelectedIndex());
-
-                int num = DBMethods.addCarRecord(id, brand, year, color);
+                String FirstName = FNameTF.getText();
+                String LastName = LNameTF.getText();
+                String Email = EmailTF.getText();
+                int PhoneNumber = Integer.parseInt(PhoneNumberTF.getText());
+                
+                int num = DBMethods.addCustomerRecord(id, FirstName, LastName, Email, PhoneNumber);
                 if(num>0){
-                    JOptionPane.showMessageDialog(this, "Car Added Successfully");
-                    new AddCarToInventory().setVisible(true);
+                    JOptionPane.showMessageDialog(this, "Customer Added Successfully");
+                    new AddRental().setVisible(true);
                     this.dispose();
                 }
             }
-            catch(NumberFormatException e){
-                if(String.valueOf(YearTF.getText()).equals("")){
-                    JOptionPane.showMessageDialog(this, "'Year' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            catch(NumberFormatException ex){
+                if(String.valueOf(PhoneNumberTF.getText()).equals("")){
+                    JOptionPane.showMessageDialog(this, "'Phone Number' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 }
-                else
-                    JOptionPane.showMessageDialog(this, "'Year' has to be a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                else{
+                    JOptionPane.showMessageDialog(this, "'Phone Number' has to be a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }   
     }
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt){
-        new AddCarToInventory().setVisible(true);
+        new AddRental().setVisible(true);
         this.dispose();
     }
 
     private JLabel ItemNumberLabel;
-    private JLabel BrandLabel;
-    private JLabel YearLabel;
-    private JLabel ColorLabel;
+    private JLabel FNameLabel;
+    private JLabel LNameLabel;
+    private JLabel EmailLabel;
     private JLabel TitleLabel;
+    private JLabel PhoneNumberLabel;
     private JTextField ItemNumberTF;
-    private JTextField BrandTF;
-    private JTextField YearTF;
-    private JComboBox<String> ColorTF;
+    private JTextField FNameTF;
+    private JTextField LNameTF;
+    private JTextField EmailTF;
+    private JTextField PhoneNumberTF;
     private JButton AddItemBtn;
     private JButton CancelBtn;
 
