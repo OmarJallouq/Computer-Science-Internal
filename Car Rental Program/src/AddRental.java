@@ -3,7 +3,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -161,6 +161,8 @@ public class AddRental extends  javax.swing.JFrame {
 
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt){
         try{
+            Connection con = MyConnection.getMyConnection();
+
             String CustomerPreset = this.CustomerPresetTF.getItemAt(this.CustomerPresetTF.getSelectedIndex());
             String FirstName = "";
             String LastName = "";
@@ -171,11 +173,29 @@ public class AddRental extends  javax.swing.JFrame {
                 FirstName = CustomerPreset.substring(0, iend);
                 CustomerPreset = CustomerPreset.substring(iend+1);
                 LastName = CustomerPreset;
-            
+                        
             String RentalType = this.RentalTypeTF.getItemAt(this.RentalTypeTF.getSelectedIndex());
             String note = String.valueOf(NotesTF.getText());
 
-            Connection con = MyConnection.getMyConnection();
+            List<String> SelectedEmployees = EmployeeList.getSelectedValuesList();
+
+            for(int i = 0 ; i < SelectedEmployees.size() ; i++){
+                String FullName = SelectedEmployees.get(i);
+                int iend2 = FullName.indexOf(' ');
+                    String EmpFirstName = FullName.substring(0,iend2);
+                    FullName = FullName.substring(iend2+1);
+                    String EmpLastName = FullName;
+
+                PreparedStatement stmt = con.prepareStatement("SELECT id FROM employee WHERE First_Name='"+EmpFirstName+"' AND Last_Name='"+EmpLastName+"'");
+                ResultSet rs = stmt.executeQuery();
+                rs.next();
+                int EmployeeID = rs.getInt(1);
+                System.out.println(EmployeeID+"HERES THE EMPLOYEE ID");
+                stmt = con.prepareStatement("INSERT INTO employeerental VALUES(?,?)");
+                stmt.setInt(1, EmployeeID);
+                stmt.setInt(2, ItemID);
+                stmt.executeUpdate();
+            }
             PreparedStatement stmt = con.prepareStatement("SELECT id FROM customer WHERE First_Name='"+FirstName+"' AND Last_Name='"+LastName+"'");
             ResultSet rs = stmt.executeQuery();
             rs.next();
