@@ -380,14 +380,15 @@ class DBMethods {
         }
     }
 
-    public static int updateRentalRecord(int id, String RentalType, String Note){
+    public static int updateRentalRecord(int id, String RentalType, String Note, Boolean completed){
         try{
             Connection con = MyConnection.getMyConnection();
-            PreparedStatement stmt = con.prepareStatement("UPDATE rental set id=?, RentalType=?, Notes=? WHERE id=?");
+            PreparedStatement stmt = con.prepareStatement("UPDATE rental set id=?, RentalType=?, Notes=?, Completed=? WHERE id=?");
             stmt.setInt(1,id);
             stmt.setString(2,RentalType);
             stmt.setString(3,Note);
-            stmt.setInt(4,id);
+            stmt.setBoolean(4, completed);
+            stmt.setInt(5,id);
             int n = stmt.executeUpdate();
             return n;
         }

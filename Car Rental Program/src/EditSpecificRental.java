@@ -129,10 +129,16 @@ public class EditSpecificRental extends  javax.swing.JFrame {
                             .addComponent(CustomerPresetTF))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                .addComponent(RentalTypeLabel)
-                                .addComponent(RentalTypeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(NotesLabel)
-                                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(RentalTypeLabel)
+                                        .addComponent(RentalTypeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                        .addComponent(CompletedLabel)
+                                        .addComponent(CompletedTF)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(NotesLabel)
+                                    .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createParallelGroup(Alignment.LEADING)
                                 .addComponent(EmployeeLabel)    
                                 .addComponent(EmployeeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -152,10 +158,13 @@ public class EditSpecificRental extends  javax.swing.JFrame {
                     .addGap(18,18,18)
                     .addGroup(layout.createParallelGroup(Alignment.LEADING)
                         .addComponent(RentalTypeLabel)
+                        .addComponent(CompletedLabel)
                         .addComponent(EmployeeLabel))
                     .addGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(RentalTypeTF)
+                            .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                .addComponent(RentalTypeTF)
+                                .addComponent(CompletedTF))
                             .addGap(18,18,18)
                             .addComponent(NotesLabel)
                             .addComponent(jScrollPane))
@@ -174,8 +183,9 @@ public class EditSpecificRental extends  javax.swing.JFrame {
             //Gets the values in the fields and adds them to the rental DB                        
             String RentalType = this.RentalTypeTF.getItemAt(this.RentalTypeTF.getSelectedIndex());
             String note = String.valueOf(NotesTF.getText());
-
-            int num = DBMethods.updateRentalRecord(ItemID, RentalType, note);
+            Boolean completedBoolean = CompletedTF.isSelected();
+            
+            int num = DBMethods.updateRentalRecord(ItemID, RentalType, note, completedBoolean);
             
             if(num>0){
                 JOptionPane.showMessageDialog(this, "Rental Edited Successfully!");
