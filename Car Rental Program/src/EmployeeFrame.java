@@ -1,13 +1,17 @@
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible for managing all things employee
+ */
+
 public class EmployeeFrame extends javax.swing.JFrame {
     public EmployeeFrame(Integer userID){
         initComponents();
     }
 
     private void initComponents(){
-        
+        //Initializes the components on the JFrame
         ViewAllInventory = new JButton();
         ClockInOut = new JButton();
         Rentals = new JButton(); 
@@ -85,6 +89,8 @@ public class EmployeeFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
+
+    //Buttons that redirects the user to the respective JFrames
 
     private void ViewAllInventoryActionPerformed(java.awt.event.ActionEvent evt) {
         new ViewAllInventory().setVisible(true);

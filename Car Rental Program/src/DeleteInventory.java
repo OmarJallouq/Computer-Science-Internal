@@ -1,11 +1,16 @@
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible for the deletion of Inventory items
+ */
+
 public class DeleteInventory extends javax.swing.JFrame {
+
+    //Initializes the list to the list of inventory from DB
     public DeleteInventory(){
         initComponents();
         jScrollPane.setVisible(true);
@@ -25,7 +30,7 @@ public class DeleteInventory extends javax.swing.JFrame {
     }
 
     private void initComponents(){
-
+        //Initializes the components on the JFrame
         TitleLabel = new JLabel();
         ItemList = new JList<>();
         jScrollPane = new JScrollPane();
@@ -82,8 +87,10 @@ public class DeleteInventory extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
-    
+
+    //Delete Item button action
     private void DeleteItemActionPerformed(ActionEvent evt) {
+        //Gets the selected value in the list + deletes them from the employee table on the DB.
         int id;
 
         String selected = ItemList.getModel().getElementAt(ItemList.getSelectedIndex());
@@ -107,6 +114,7 @@ public class DeleteInventory extends javax.swing.JFrame {
         }
     }
 
+    //Cancel button pressed, return to previous JFrame
     private void CloseActionPerformed(java.awt.event.ActionEvent evt){
         this.dispose();
     }

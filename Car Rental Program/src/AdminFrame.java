@@ -1,6 +1,10 @@
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible in managing all things admin
+ */
+
 public class AdminFrame extends javax.swing.JFrame {
     public AdminFrame() {
         initComponents();
@@ -8,6 +12,7 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void initComponents() {
 
+        //Initializes the components on the JFrame
         Inventory = new JButton();
         Rentals = new JButton();
         Employees = new JButton();
@@ -85,6 +90,8 @@ public class AdminFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
+
+    //Buttons that redirects the user to the respective JFrames
 
     private void InventoryActionPerformed(java.awt.event.ActionEvent evt) {
         new AdminInventoryFrame().setVisible(true);

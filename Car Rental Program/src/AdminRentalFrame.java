@@ -1,12 +1,17 @@
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible for managing rentals
+ */
+
 public class AdminRentalFrame extends javax.swing.JFrame {
     public AdminRentalFrame() {
         initComponents();
     }
 
     private void initComponents() {
+        //Initializes the components on the JFrame
         AddRental = new JButton();
         ModifyRental = new JButton();
         DeleteRental = new JButton();
@@ -112,6 +117,8 @@ public class AdminRentalFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
+
+    //Buttons that redirects the user to the respective JFrames
 
     private void AddRentalActionPerformed(java.awt.event.ActionEvent evt) {
         new AddRental().setVisible(true);

@@ -9,8 +9,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible in adding a specific car into the Rental Company's Inventory
+ */
+
 public class AddCarToInventory extends  javax.swing.JFrame {
     
+    //Initializes the ID field to the pre-set auto-incremented number from DB
+    //Initializes Car Preset drop down to values present in Car Table in DB
     public AddCarToInventory() {
         initComponents();
         try{
@@ -29,6 +35,7 @@ public class AddCarToInventory extends  javax.swing.JFrame {
 
     private void initComponents() {
 
+        //Initializes the components on the JFrame
         ItemNumberLabel = new JLabel();
         LicensePlateLabel = new JLabel();
         RentalRateLabel = new JLabel();
@@ -150,17 +157,21 @@ public class AddCarToInventory extends  javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    //Create new preset button action: Opens the Add Car JFrame
     private void CreateNewPresetPerformed(ActionEvent evt) {
         new AddCar().setVisible(true);
         this.dispose();
     }
 
+    //Add item button action: Adds the specific car into the Inventory Table in DB
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt){
+        //Checks to see if required fields are empty
         if(LicensePlateTF.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "'License Plate Number' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
         else{
             try{
+                //Gets the field values from the Text Fields and inputs them into the Inventory Table in the DB.
                 int id = Integer.parseInt(ItemNumberTF.getText());
                 String preset = this.CarPresetTF.getItemAt(this.CarPresetTF.getSelectedIndex());
                 String brand = "";
@@ -181,6 +192,7 @@ public class AddCarToInventory extends  javax.swing.JFrame {
                 int rentalrate = Integer.parseInt(RentalRateTF.getText());
                 String note = String.valueOf(NotesTF.getText());
             
+                //Gets the ID from the Car Table in DB
                 Connection con = MyConnection.getMyConnection();
                 PreparedStatement stmt = con.prepareStatement("SELECT id FROM car WHERE Brand='"+brand+"' AND Year='"+year+"' AND Color='"+color+"'");
                 ResultSet rs = stmt.executeQuery();
@@ -196,6 +208,7 @@ public class AddCarToInventory extends  javax.swing.JFrame {
             catch(SQLException e){
                 e.printStackTrace();
             }
+            //Exception: CHecks if the "Rental Rate" TF is empty or is not a number
             catch(NumberFormatException ex){
                 if(String.valueOf(RentalRateTF.getText()).equals("")){
                     JOptionPane.showMessageDialog(this, "'Rental Rate' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -207,10 +220,12 @@ public class AddCarToInventory extends  javax.swing.JFrame {
         }
     }
 
+    //Cancel button action, closes this JFrame
     private void CancelActionPerformed(java.awt.event.ActionEvent evt){
         this.dispose();
     }
     
+    //Function that checks if a certain string solely composed of an integer
     public static boolean isParsable(String input) {
         try {
             Integer.parseInt(input);

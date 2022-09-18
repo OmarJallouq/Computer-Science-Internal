@@ -7,8 +7,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible to add new employees to the DB.
+ */
+
 public class AddEmployee extends  javax.swing.JFrame {
     
+    //Initializes the ID field to the pre-set auto-incremented number from DB
+    //Initializes Address Preset drop down to values present in Address Table in DB
     public AddEmployee() {
         initComponents();
         try{
@@ -29,6 +35,7 @@ public class AddEmployee extends  javax.swing.JFrame {
 
     private void initComponents() {
 
+        //Initializes the components on the JFrame
         ItemNumberLabel = new JLabel();
         FirstNameLabel = new JLabel();
         LastNameLabel = new JLabel();
@@ -192,12 +199,15 @@ public class AddEmployee extends  javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    //Create preset button action: opens the AddAddress JFrame
     private void CreateNewPresetPerformed(ActionEvent evt) {
         new AddAddress("add employee", -1).setVisible(true);
         this.dispose();
     }
 
+    //Add employee button action
     private void AddEmployeeActionPerformed(java.awt.event.ActionEvent evt){
+        //Checks if any of the required values are empty
         if(FirstNameTF.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "'First Name' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -218,6 +228,7 @@ public class AddEmployee extends  javax.swing.JFrame {
         }
         else{
             try{
+                //Gets the values in the fields + adds them to the employee table in DB
                 int id = Integer.parseInt(ItemNumberTF.getText());
                 String preset = this.AddressPresetTF.getItemAt(this.AddressPresetTF.getSelectedIndex());
                 String city = "";
@@ -242,6 +253,7 @@ public class AddEmployee extends  javax.swing.JFrame {
                 String Password = String.valueOf(PasswordTF.getText());
                 String role = this.RoleTF.getItemAt(this.RoleTF.getSelectedIndex());
 
+                //Gets AddressID from the address table in DB
                 Connection con = MyConnection.getMyConnection();
                 PreparedStatement stmt = con.prepareStatement("SELECT id FROM address WHERE City='"+city+"' AND Area='"+area+"' AND Address1='"+address+"'");
                 ResultSet rs = stmt.executeQuery();
@@ -257,6 +269,7 @@ public class AddEmployee extends  javax.swing.JFrame {
             catch(SQLException e){
                 e.printStackTrace();
             }
+            //checks if "Phone Number" field is empty or not a number
             catch(NumberFormatException ex){
                 if(String.valueOf(PhoneNumberTF.getText()).equals("")){
                     JOptionPane.showMessageDialog(this, "'Phone Number' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);

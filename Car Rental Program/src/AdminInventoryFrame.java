@@ -1,11 +1,16 @@
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible in managing inventory
+ */
+
 public class AdminInventoryFrame extends javax.swing.JFrame {
     public AdminInventoryFrame() {
         initComponents();
     }
 
+    //Initializes the components on the JFrame
     private void initComponents() {
         AddCar = new JButton();
         ModifyCar = new JButton();
@@ -98,6 +103,8 @@ public class AdminInventoryFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
+
+    //Buttons that redirects the user to the respective JFrames
 
     private void AddCarActionPerformed(java.awt.event.ActionEvent evt) {
         new AddCarToInventory().setVisible(true);

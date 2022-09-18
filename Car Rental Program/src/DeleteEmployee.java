@@ -5,7 +5,13 @@ import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsibile for the deletion of employees
+ */
+
 public class DeleteEmployee extends javax.swing.JFrame {
+
+    //Initializes the list to the list of employees from DB
     public DeleteEmployee(){
         initComponents();
         jScrollPane.setVisible(true);
@@ -25,7 +31,7 @@ public class DeleteEmployee extends javax.swing.JFrame {
     }
 
     private void initComponents(){
-
+        //Initializes the components on the JFrame
         TitleLabel = new JLabel();
         ItemList = new JList<>();
         jScrollPane = new JScrollPane();
@@ -83,7 +89,9 @@ public class DeleteEmployee extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
+    //Delete Item button action
     private void DeleteItemActionPerformed(ActionEvent evt) {
+        //Gets the selected value in the list + deletes them from the employee table on the DB.
         int id;
         
         String selected = ItemList.getModel().getElementAt(ItemList.getSelectedIndex());
@@ -104,6 +112,7 @@ public class DeleteEmployee extends javax.swing.JFrame {
         }
     }
 
+    //Cancel button pressed, return to previous JFrame
     private void CloseActionPerformed(java.awt.event.ActionEvent evt){
         this.dispose();
     }

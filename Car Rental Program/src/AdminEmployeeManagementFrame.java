@@ -1,12 +1,18 @@
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible to manage employees
+ */
+
 public class AdminEmployeeManagementFrame extends javax.swing.JFrame {
     public AdminEmployeeManagementFrame() {
         initComponents();
     }
 
     private void initComponents() {
+
+        //Initializes the components on the JFrame
         AddEmployee = new JButton();
         ModifyEmployee = new JButton();
         DeleteEmployee = new JButton();
@@ -98,6 +104,8 @@ public class AdminEmployeeManagementFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }
+
+    //Buttons that redirects the user to the respective JFrames
 
     private void AddEmployeeActionPerformed(java.awt.event.ActionEvent evt) {
         new AddEmployee().setVisible(true);

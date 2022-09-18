@@ -4,8 +4,13 @@ import java.sql.*;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
-public class EditSpecificInventory extends javax.swing.JFrame {
+/*
+ * JFrame responsible for editing specific inventory records
+ */
 
+public class EditSpecificInventory extends javax.swing.JFrame {
+    //Initializes the ID field to the pre-set auto-incremented number from DB
+    //Initializes the list to the list of inventory from DB
     public EditSpecificInventory(Integer id, String brand, String year, String color, String licenseplate) {
         initComponents();
         try {
@@ -29,7 +34,7 @@ public class EditSpecificInventory extends javax.swing.JFrame {
     }
 
     private void initComponents() {
-
+        //Initializes the components on the JFrame
         ItemNumberLabel = new JLabel();
         LicensePlateLabel = new JLabel();
         RentalRateLabel = new JLabel();
@@ -150,6 +155,7 @@ public class EditSpecificInventory extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    //Edit Item button action
     private void EditItemActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             int id = Integer.parseInt(ItemNumberTF.getText());            
@@ -161,7 +167,9 @@ public class EditSpecificInventory extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Inventory Updated Successfully!");
                 this.dispose();
             }
-        } catch (NumberFormatException ex) {
+        } 
+        //Checks if "Phone Number" is empty/not a number
+        catch (NumberFormatException ex) {
             if (String.valueOf(RentalRateTF.getText()).equals("")) {
                 JOptionPane.showMessageDialog(this, "'Rental Rate' cannot be empty.", "Input Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -172,10 +180,12 @@ public class EditSpecificInventory extends javax.swing.JFrame {
         }
     }
 
+    //Cancel button pressed, return to previous JFrame
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
     }
 
+    //Function that checks if a certain string solely composed of an integer
     public static boolean isParsable(String input) {
         try {
             Integer.parseInt(input);
@@ -185,6 +195,7 @@ public class EditSpecificInventory extends javax.swing.JFrame {
         }
     }
 
+    //Makes the ComboBox read only (Address Drop Down)
     private void setJComboBoxReadOnly(JComboBox<String> jcb) {
         JTextField jtf = (JTextField) jcb.getEditor().getEditorComponent();
         jtf.setEditable(false);

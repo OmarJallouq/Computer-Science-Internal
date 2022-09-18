@@ -1,12 +1,15 @@
 import javax.swing.*;
 
+/*
+ * Main JFrame, log in page
+ */
+
 public class LogInFrame extends javax.swing.JFrame {
     public LogInFrame() {
         initComponents();
     }
 
-    // @SuppressWarnings("unchecked")
-
+    //Initializes the components on the JFrame
     private void initComponents() {
         UsernameTF = new JTextField();
         PasswordTF = new JPasswordField();
@@ -26,11 +29,6 @@ public class LogInFrame extends javax.swing.JFrame {
         PasswordLabel.setText("Password:");
 
         UsernameTF.setToolTipText("Enter Username");
-        UsernameTF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsernameTFActionPerformed(evt);
-            }
-        });
 
         PasswordTF.setToolTipText("Enter Password");
 
@@ -105,10 +103,7 @@ public class LogInFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void UsernameTFActionPerformed(java.awt.event.ActionEvent evt) {
-
-    }
-
+    //Log In Button Action
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {
         String uName = UsernameTF.getText();
         String uPass = String.valueOf(PasswordTF.getPassword());
@@ -133,6 +128,7 @@ public class LogInFrame extends javax.swing.JFrame {
         }
     }
 
+    //Exit button, quits app
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
     }

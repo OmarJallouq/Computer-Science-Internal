@@ -4,13 +4,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
+
+/*
+ * JFrame responsible for adding new rentals to the DB
+ */
 
 public class AddRental extends  javax.swing.JFrame {
     DefaultListModel<String> modelList = new DefaultListModel<String>();
     int ItemID = -1;
+
+    //Initializes the ID field to the pre-set auto-incremented number
+    //Initializes the employeeList and the CustomerPreset with the values in the employee + customer DB
     public AddRental() {
         initComponents();
         try{
@@ -40,6 +46,7 @@ public class AddRental extends  javax.swing.JFrame {
 
     private void initComponents() {
 
+        //Initalizes the components of the JFrame
         RentalTypeLabel = new JLabel();
         NotesLabel = new JLabel();
         TitleLabel = new JLabel();
@@ -154,13 +161,16 @@ public class AddRental extends  javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    //Create new customer button action: opens add customer JFrame
     private void CreateNewPresetPerformed(ActionEvent evt) {
         new AddCustomer().setVisible(true);
         this.dispose();
     }
 
+    //Add item button action
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt){
         try{
+            //Gets the values in the fields and adds them to the rental DB
             Connection con = MyConnection.getMyConnection();
 
             String CustomerPreset = this.CustomerPresetTF.getItemAt(this.CustomerPresetTF.getSelectedIndex());
@@ -179,6 +189,7 @@ public class AddRental extends  javax.swing.JFrame {
 
             List<String> SelectedEmployees = EmployeeList.getSelectedValuesList();
 
+            //gets the ID of all employees selected, and adds them all into the employeerental JOIN table in DB
             for(int i = 0 ; i < SelectedEmployees.size() ; i++){
                 String FullName = SelectedEmployees.get(i);
                 int iend2 = FullName.indexOf(' ');
@@ -190,7 +201,6 @@ public class AddRental extends  javax.swing.JFrame {
                 ResultSet rs = stmt.executeQuery();
                 rs.next();
                 int EmployeeID = rs.getInt(1);
-                System.out.println(EmployeeID+"HERES THE EMPLOYEE ID");
                 stmt = con.prepareStatement("INSERT INTO employeerental VALUES(?,?)");
                 stmt.setInt(1, EmployeeID);
                 stmt.setInt(2, ItemID);
@@ -216,10 +226,12 @@ public class AddRental extends  javax.swing.JFrame {
         }
     }
 
+    //Cancel button pressed, return to previous JFrame
     private void CancelActionPerformed(java.awt.event.ActionEvent evt){
         this.dispose();
     }
     
+    //Function that checks if a certain string solely composed of an integer
     public static boolean isParsable(String input) {
         try {
             Integer.parseInt(input);
@@ -241,5 +253,6 @@ public class AddRental extends  javax.swing.JFrame {
     private JButton AddItemBtn;
     private JButton CancelBtn;
     private JScrollPane jScrollPane;
+    
 
 }

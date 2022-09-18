@@ -5,8 +5,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible to add GENERAL cars into the DB.
+ */
+
 public class AddCar extends  javax.swing.JFrame {
     
+    //Initializes the ID field to the pre-set auto-incremented number from DB
     public AddCar() {
         initComponents();
         int itemid = DBMethods.getCarMaxID() + 1;
@@ -14,7 +19,8 @@ public class AddCar extends  javax.swing.JFrame {
     }
 
     private void initComponents() {
-
+        
+        //Initializes the components on the JFrame
         ItemNumberLabel = new JLabel();
         BrandLabel = new JLabel();
         YearLabel = new JLabel();
@@ -116,12 +122,15 @@ public class AddCar extends  javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
+    //Add Item button pressed action
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt){
+        //Checks if any of the required fields are empty
         if(BrandTF.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "'Brand' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
         else{
             try{
+                //Gets the field values from the Text Fields and inputs them into the Car Table in the DB.
                 int id = Integer.parseInt(ItemNumberTF.getText());
                 String brand = BrandTF.getText();
                 int year = Integer.parseInt(YearTF.getText());
@@ -134,7 +143,8 @@ public class AddCar extends  javax.swing.JFrame {
                     this.dispose();
                 }
             }
-            catch(NumberFormatException e){
+            //Exception: CHecks if the "Year" TF is empty or is not a number
+            catch(NumberFormatException e){ 
                 if(String.valueOf(YearTF.getText()).equals("")){
                     JOptionPane.showMessageDialog(this, "'Year' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -144,6 +154,7 @@ public class AddCar extends  javax.swing.JFrame {
         }   
     }
 
+    //Cancel button action, returns to previous JFrame
     private void CancelActionPerformed(java.awt.event.ActionEvent evt){
         new AddCarToInventory().setVisible(true);
         this.dispose();

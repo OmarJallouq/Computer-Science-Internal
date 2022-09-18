@@ -3,9 +3,13 @@ import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionEvent;
 
+/*
+ * JFrame responsible for editing specific employee records
+ */
 
 public class EditSpecificEmployee extends javax.swing.JFrame {
-
+    //Initializes the ID field to the pre-set auto-incremented number from DB
+    //Initializes the list to the list of employees from DB
     public EditSpecificEmployee(Integer id) {
         initComponents();
         empID = id;
@@ -36,6 +40,7 @@ public class EditSpecificEmployee extends javax.swing.JFrame {
     }
 
     private void initComponents() {
+        //Initializes the components on the JFrame
         ItemNumberLabel = new JLabel();
         FirstNameLabel = new JLabel();
         LastNameLabel = new JLabel();
@@ -208,7 +213,9 @@ public class EditSpecificEmployee extends javax.swing.JFrame {
         this.dispose();
     }
 
+    //Edit Item button action
     private void EditItemActionPerformed(java.awt.event.ActionEvent evt) {
+        //checks if any of the required fields are empty
         if(FirstNameTF.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "'First Name' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -229,6 +236,7 @@ public class EditSpecificEmployee extends javax.swing.JFrame {
         }
         else{
             try {
+                //Gets the values in the fields + edits them to the employee table on the DB.
                 int id = Integer.parseInt(ItemNumberTF.getText());            
                 String firstname = FirstNameTF.getText();
                 String lastname = LastNameTF.getText();
@@ -252,6 +260,7 @@ public class EditSpecificEmployee extends javax.swing.JFrame {
                 
                 address = preset;
 
+                //Gets AddressID from Address table on DB
                 Connection con = MyConnection.getMyConnection();
                 PreparedStatement stmt = con.prepareStatement("SELECT id FROM address WHERE City='"+city+"' AND Area='"+area+"' AND Address1='"+address+"'");
                 ResultSet rs = stmt.executeQuery();
@@ -266,6 +275,7 @@ public class EditSpecificEmployee extends javax.swing.JFrame {
             } catch (SQLException e){
                 e.printStackTrace();
             }
+            //Checks if "Phone Number" is empty/not a number
             catch(NumberFormatException ex){
                 if(String.valueOf(PhoneNumberTF.getText()).equals("")){
                     JOptionPane.showMessageDialog(this, "'Phone Number' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -277,10 +287,12 @@ public class EditSpecificEmployee extends javax.swing.JFrame {
         }
     }
 
+    //Cancel button pressed, return to previous JFrame
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
     }
 
+    //Function that checks if a certain string solely composed of an integer
     public static boolean isParsable(String input) {
         try {
             Integer.parseInt(input);

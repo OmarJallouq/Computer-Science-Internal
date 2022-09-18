@@ -4,8 +4,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible in adding new customers to the customer table DB
+ */
+
 public class AddCustomer extends  javax.swing.JFrame {
     
+    //Initializes the ID field to the pre-set auto-incremented number from DB
     public AddCustomer() {
         initComponents();
         int itemid = DBMethods.getCustomerMaxID() + 1;
@@ -13,7 +18,7 @@ public class AddCustomer extends  javax.swing.JFrame {
     }
 
     private void initComponents() {
-
+        //Initializes the components on the JFrame
         ItemNumberLabel = new JLabel();
         FNameLabel = new JLabel();
         LNameLabel = new JLabel();
@@ -118,7 +123,9 @@ public class AddCustomer extends  javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
+    //Add Item button action: Adds Customer to the customer table in DB
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt){
+        //Checks if any of the required fields are empty
         if(FNameTF.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "'First Name' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -130,6 +137,7 @@ public class AddCustomer extends  javax.swing.JFrame {
         }
         else{
             try{
+                //Gets the values in the fields + adds them to the Address table on the DB.
                 int id = Integer.parseInt(ItemNumberTF.getText());
                 String FirstName = FNameTF.getText();
                 String LastName = LNameTF.getText();
@@ -143,6 +151,7 @@ public class AddCustomer extends  javax.swing.JFrame {
                     this.dispose();
                 }
             }
+            //Checks if "Phone Number" field is empty/not a number
             catch(NumberFormatException ex){
                 if(String.valueOf(PhoneNumberTF.getText()).equals("")){
                     JOptionPane.showMessageDialog(this, "'Phone Number' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -154,6 +163,7 @@ public class AddCustomer extends  javax.swing.JFrame {
         }   
     }
 
+    //Cancel button pressed, return to previous JFrame
     private void CancelActionPerformed(java.awt.event.ActionEvent evt){
         new AddRental().setVisible(true);
         this.dispose();
