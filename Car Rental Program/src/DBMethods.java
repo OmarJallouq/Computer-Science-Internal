@@ -338,7 +338,7 @@ class DBMethods {
     public static int addRentalRecord(int id, int CustomerID, String RentalType, Date RentalDate, Date ReturnDate, String Note){
         try{
             Connection con = MyConnection.getMyConnection();
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO rental VALUES(?,?,?,?,?,?)");
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO rental VALUES(?,?,?,?,?,?,0)");
             stmt.setInt(1, id);
             stmt.setInt(2,CustomerID);
             stmt.setString(3,RentalType);
