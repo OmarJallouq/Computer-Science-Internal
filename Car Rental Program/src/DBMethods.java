@@ -354,5 +354,59 @@ class DBMethods {
         return 0;
     }
 
+    public static ResultSet getAllRental(){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT rental.id, customer.First_Name , customer.Last_Name, rental.RentalType FROM rental JOIN customer WHERE rental.Customer_ID=customer.id");
+            ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    public static ResultSet getCustomerRecord(int id){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT *  FROM customer WHERE id = '" + id + "'");
+            ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int updateRentalRecord(int id, String RentalType, String Note){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("UPDATE rental set id=?, RentalType=?, Notes=? WHERE id=?");
+            stmt.setInt(1,id);
+            stmt.setString(2,RentalType);
+            stmt.setString(3,Note);
+            stmt.setInt(4,id);
+            int n = stmt.executeUpdate();
+            return n;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static ResultSet getAllCurrentRental(){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT rental.id, customer.First_Name , customer.Last_Name, rental.RentalType FROM rental JOIN customer WHERE rental.Customer_ID=customer.id AND rental.Completed=0");
+            ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

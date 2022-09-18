@@ -13,10 +13,9 @@ public class AdminRentalFrame extends javax.swing.JFrame {
     private void initComponents() {
         //Initializes the components on the JFrame
         AddRental = new JButton();
-        ModifyRental = new JButton();
+        ViewModifyRental = new JButton();
         DeleteRental = new JButton();
-        ViewAllRentals = new JButton();
-        Payments = new JButton();
+        PaymentsRentals = new JButton();
         GoBack = new JButton();
         TitleLabel = new JLabel();
 
@@ -30,10 +29,10 @@ public class AdminRentalFrame extends javax.swing.JFrame {
             }
         });
 
-        ModifyRental.setText("Modify Rental");
-        ModifyRental.addActionListener(new java.awt.event.ActionListener() {
+        ViewModifyRental.setText("ViewModify Rental");
+        ViewModifyRental.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModifyRentalActionPerformed(evt);
+                ViewModifyRentalActionPerformed(evt);
             }
         });
 
@@ -44,17 +43,10 @@ public class AdminRentalFrame extends javax.swing.JFrame {
             }
         });
 
-        ViewAllRentals.setText("View All Rentals");
-        ViewAllRentals.addActionListener(new java.awt.event.ActionListener() {
+        PaymentsRentals.setText("Payments");
+        PaymentsRentals.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ViewAllRentalsActionPerformed(evt);
-            }
-        });
-
-        Payments.setText("Payments");
-        Payments.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PaymentsActionPerformed(evt);
+                PaymentsRentalsActionPerformed(evt);
             }
         });
 
@@ -83,17 +75,15 @@ public class AdminRentalFrame extends javax.swing.JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(AddRental, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(ModifyRental, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
+                                                .addComponent(ViewModifyRental, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(DeleteRental, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(ViewAllRentals, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                .addComponent(PaymentsRentals, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         155, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(77, 77, 78)
-                                                .addComponent(Payments, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addGap(77, 77, 78)))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
         layout.setVerticalGroup(
                 layout.createParallelGroup(Alignment.LEADING)
@@ -104,13 +94,11 @@ public class AdminRentalFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
                                         .addComponent(AddRental)
-                                        .addComponent(ModifyRental, Alignment.TRAILING))
+                                        .addComponent(ViewModifyRental, Alignment.TRAILING))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup()
                                         .addComponent(DeleteRental)
-                                        .addComponent(ViewAllRentals))
-                                .addGap(18, 18, 18)
-                                .addComponent(Payments)
+                                        .addComponent(PaymentsRentals))
                                 .addGap(18, 18, 18)
                                 .addComponent(GoBack)));
 
@@ -124,20 +112,16 @@ public class AdminRentalFrame extends javax.swing.JFrame {
         new AddRental().setVisible(true);
     }
 
-    private void ModifyRentalActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Modify Rental Clicked");
+    private void ViewModifyRentalActionPerformed(java.awt.event.ActionEvent evt) {
+        new ModifyRentals().setVisible(true);
     }
 
     private void DeleteRentalActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println("Delete Rental Clicked");
     }
 
-    private void ViewAllRentalsActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("View All Rentals Clicked");
-    }
-
-    private void PaymentsActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Payments Clicked");
+    private void PaymentsRentalsActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println("Payments Rentals Clicked");
     }
 
     private void GoBackActionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,10 +130,9 @@ public class AdminRentalFrame extends javax.swing.JFrame {
     }
 
     private JButton AddRental;
-    private JButton ModifyRental;
+    private JButton ViewModifyRental;
     private JButton DeleteRental;
-    private JButton ViewAllRentals;
-    private JButton Payments;
+    private JButton PaymentsRentals;
     private JButton GoBack;
     private JLabel TitleLabel;
 }
