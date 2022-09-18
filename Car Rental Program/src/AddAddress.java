@@ -4,8 +4,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 
+/*
+ * JFrame responsible to add an address to the DB.
+ */
+
 public class AddAddress extends  javax.swing.JFrame {
     
+    //Initializes the ID field to the pre-set auto-incremented number from DB
     public AddAddress(String ogframe, Integer ireturnid) {
         initComponents();
         int itemid = DBMethods.getAddressMaxID() + 1;
@@ -16,6 +21,7 @@ public class AddAddress extends  javax.swing.JFrame {
 
     private void initComponents() {
 
+        //Initializes the components on the JFrame
         ItemNumberLabel = new JLabel();
         CityLabel = new JLabel();
         AreaLabel = new JLabel();
@@ -109,7 +115,9 @@ public class AddAddress extends  javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     
+    //Add Item button pressed action.
     private void AddItemActionPerformed(java.awt.event.ActionEvent evt){
+        //Checks if any of the required fields are empty
         if(CityTF.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "'City' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -120,6 +128,7 @@ public class AddAddress extends  javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "'Address' cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
         else{
+            //Gets the values in the fields + adds them to the Address table on the DB.
             int id = Integer.parseInt(ItemNumberTF.getText());
             String city = CityTF.getText();
             String area = AreaTF.getText();
@@ -141,8 +150,14 @@ public class AddAddress extends  javax.swing.JFrame {
         }   
     }
 
+    //Cancel button pressed, return to previous JFrame
     private void CancelActionPerformed(java.awt.event.ActionEvent evt){
-        new AddEmployee().setVisible(true);
+        if(origframe == "add employee"){
+            new AddEmployee().setVisible(true);
+        }
+        else if(origframe == "edit employee"){
+            new EditSpecificEmployee(returnid).setVisible(true);
+        }
         this.dispose();
     }
 

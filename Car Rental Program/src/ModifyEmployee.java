@@ -1,7 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
