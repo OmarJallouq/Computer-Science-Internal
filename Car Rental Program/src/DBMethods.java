@@ -410,4 +410,44 @@ class DBMethods {
             return null;
         }
     }
+
+    public static ResultSet getOldRentals(){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT rental.id, customer.First_Name, customer.Last_Name, rental.RentalType, rental.Notes FROM rental JOIN customer WHERE customer.id = rental.Customer_ID AND rental.Completed=TRUE");
+            ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResultSet getEmployeesInvolved(int RentalID){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT employee.First_Name, employee.Last_Name FROM employeerental JOIN employee WHERE employeerental.employeeID = employee.id AND employeerental.rentalID = ?");
+            stmt.setInt(1,RentalID);
+            ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ResultSet getEmployeeSpecificRentals(int EmployeeID){
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT rental.id, customer.First_Name, customer.Last_Name, rental.RentalType, rental.Notes, employeerental.employeeID FROM rental JOIN customer, employeerental WHERE customer.id = rental.Customer_ID AND employeerental.employeeID ="+EmployeeID+"");
+            ResultSet rs = stmt.executeQuery();
+            return rs;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

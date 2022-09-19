@@ -1,3 +1,5 @@
+import java.sql.*;
+
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
@@ -5,33 +7,40 @@ import javax.swing.GroupLayout.Alignment;
  * JFrame responsible for managing all things employee
  */
 
+ 
 public class EmployeeFrame extends javax.swing.JFrame {
+    Integer employeeID;
+    String employeeFirstName;
     public EmployeeFrame(Integer userID){
+        employeeID = userID;
+
+        try{
+            Connection con = MyConnection.getMyConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT First_Name FROM employee WHERE id ="+employeeID+"");
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            employeeFirstName = rs.getString(1);
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
         initComponents();
     }
 
     private void initComponents(){
         //Initializes the components on the JFrame
         ViewAllInventory = new JButton();
-        ClockInOut = new JButton();
         Rentals = new JButton(); 
         LogOut = new JButton();
         TitleLabel = new JLabel();
 
         TitleLabel.setFont(new java.awt.Font("Ariel", 1, 14));
-        TitleLabel.setText("Employee Page - ");
+        TitleLabel.setText("Employee Page - "+employeeFirstName);
 
         ViewAllInventory.setText("View All Inventory");
         ViewAllInventory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt){
                 ViewAllInventoryActionPerformed(evt);
-            }
-        });
-
-        ClockInOut.setText("Clock In/Out");
-        ClockInOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt){
-                ClockInOutActionPerformed(evt);
             }
         });
 
@@ -67,8 +76,6 @@ public class EmployeeFrame extends javax.swing.JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(ViewAllInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(ClockInOut, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(Rentals, javax.swing.GroupLayout.PREFERRED_SIZE, 155,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
@@ -81,7 +88,6 @@ public class EmployeeFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(Alignment.LEADING)
                                         .addComponent(ViewAllInventory)
-                                        .addComponent(ClockInOut)
                                         .addComponent(Rentals))
                                 .addGap(18, 18, 18)
                                 .addComponent(LogOut)));
@@ -96,20 +102,15 @@ public class EmployeeFrame extends javax.swing.JFrame {
         new ViewAllInventory().setVisible(true);
     }
 
-    private void ClockInOutActionPerformed(java.awt.event.ActionEvent evt) {
-        System.out.println("Clock In / Out Button Clicked");
-    }
-
      private void RentalsActionPerformed(java.awt.event.ActionEvent evt){
-         System.out.println("Rentals Clicked");
-     }
+        new EmployeeViewAllRentals(employeeID).setVisible(true);
+    }
 
     private void LogOutActionPerformed(java.awt.event.ActionEvent evt) {
         new LogInFrame().setVisible(true);
         this.dispose();
     }
     private JButton ViewAllInventory;
-    private JButton ClockInOut;
     private JButton Rentals; 
     private JButton LogOut;
     private JLabel TitleLabel;
