@@ -1,8 +1,11 @@
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -24,6 +27,7 @@ public class AddRental extends  javax.swing.JFrame {
             ResultSet rs2 = DBMethods.getAllEmployee();
             ItemID = DBMethods.getRentalMaxID()+1;
             
+            modelList.addElement("Choose for Me!");
             while(rs2.next()){
                 modelList.addElement(rs2.getString(3)+" "+rs2.getString(4));
             }
@@ -43,6 +47,7 @@ public class AddRental extends  javax.swing.JFrame {
     }
 
     JList<String> EmployeeList = new JList<String>(modelList);
+    
 
     private void initComponents() {
 
@@ -52,9 +57,13 @@ public class AddRental extends  javax.swing.JFrame {
         TitleLabel = new JLabel();
         CustomerPresetLabel = new JLabel();
         EmployeeLabel = new JLabel();
+        RentalDateLabel = new JLabel();
+        ReturnDateLabel = new JLabel();
         RentalTypeTF = new JComboBox<>();
         NotesTF = new JTextArea();
         CustomerPresetTF = new JComboBox<>();
+        RentalDateTF = new JTextField();
+        ReturnDateTF = new JTextField();
         CreateNewPresetBtn = new JButton();
         AddItemBtn = new JButton();
         CancelBtn = new JButton();
@@ -70,7 +79,11 @@ public class AddRental extends  javax.swing.JFrame {
         EmployeeLabel.setText("Employee(s) Involved:   ");
 
         EmployeeList.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        
+
+        RentalDateLabel.setText("Rental Date (dd/mm/yyyy):  ");
+
+        ReturnDateLabel.setText("Return Date (dd/mm/yyyy):  ");
+
         JScrollPane EmployeeTF = new JScrollPane(EmployeeList);
         EmployeeList.setVisibleRowCount(9);
 
@@ -120,12 +133,21 @@ public class AddRental extends  javax.swing.JFrame {
                             .addComponent(CreateNewPresetBtn))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                .addComponent(RentalTypeLabel)
-                                .addComponent(RentalTypeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()                                
+                                    .addComponent(RentalTypeLabel)
+                                    .addComponent(RentalTypeTF))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(RentalDateLabel)
+                                    .addComponent(RentalDateTF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(ReturnDateLabel)
+                                    .addComponent(ReturnDateTF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(NotesLabel)
                                 .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(Alignment.LEADING)
-                                .addComponent(EmployeeLabel)    
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(4,4,4)
+                                    .addComponent(EmployeeLabel))
                                 .addComponent(EmployeeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(AddItemBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,14 +166,22 @@ public class AddRental extends  javax.swing.JFrame {
                     .addGap(18,18,18)
                     .addGroup(layout.createParallelGroup(Alignment.LEADING)
                         .addComponent(RentalTypeLabel)
+                        .addComponent(RentalTypeTF)
                         .addComponent(EmployeeLabel))
                     .addGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(RentalTypeTF)
                             .addGap(18,18,18)
+                            .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                .addComponent(RentalDateLabel)
+                                .addComponent(RentalDateTF))
+                            .addGap(9,9,9)
+                            .addGroup(layout.createParallelGroup(Alignment.LEADING)
+                                .addComponent(ReturnDateLabel)
+                                .addComponent(ReturnDateTF))
                             .addComponent(NotesLabel)
                             .addComponent(jScrollPane))
-                        .addComponent(EmployeeTF))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(EmployeeTF)))
                     .addGap(18,18,18)
                     .addGroup(layout.createParallelGroup()
                         .addComponent(AddItemBtn)
@@ -176,8 +206,6 @@ public class AddRental extends  javax.swing.JFrame {
             String CustomerPreset = this.CustomerPresetTF.getItemAt(this.CustomerPresetTF.getSelectedIndex());
             String FirstName = "";
             String LastName = "";
-            java.util.Date RentalDate = new java.util.Date();
-            java.util.Date ReturnDate = new java.util.Date();
 
             int iend = CustomerPreset.indexOf(' ');
                 FirstName = CustomerPreset.substring(0, iend);
@@ -187,32 +215,48 @@ public class AddRental extends  javax.swing.JFrame {
             String RentalType = this.RentalTypeTF.getItemAt(this.RentalTypeTF.getSelectedIndex());
             String note = String.valueOf(NotesTF.getText());
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+            LocalDate RentalDate = LocalDate.parse(RentalDateTF.getText(), formatter);
+            LocalDate ReturnDate = LocalDate.parse(ReturnDateTF.getText(), formatter);
+            Date RentalDateSQL = Date.valueOf(RentalDate);
+            Date ReturnDateSQL = Date.valueOf(ReturnDate);
+
             List<String> SelectedEmployees = EmployeeList.getSelectedValuesList();
 
-            //gets the ID of all employees selected, and adds them all into the employeerental JOIN table in DB
+            Boolean EmployeeAutomation = false;
             for(int i = 0 ; i < SelectedEmployees.size() ; i++){
-                String FullName = SelectedEmployees.get(i);
-                int iend2 = FullName.indexOf(' ');
-                    String EmpFirstName = FullName.substring(0,iend2);
-                    FullName = FullName.substring(iend2+1);
-                    String EmpLastName = FullName;
+                if(SelectedEmployees.get(i) == "Choose for Me!"){
+                    EmployeeAutomation = true;
+                    break;
+                }
+            }
 
-                PreparedStatement stmt = con.prepareStatement("SELECT id FROM employee WHERE First_Name='"+EmpFirstName+"' AND Last_Name='"+EmpLastName+"'");
-                ResultSet rs = stmt.executeQuery();
-                rs.next();
-                int EmployeeID = rs.getInt(1);
-                stmt = con.prepareStatement("INSERT INTO employeerental VALUES(?,?)");
-                stmt.setInt(1, EmployeeID);
-                stmt.setInt(2, ItemID);
-                stmt.executeUpdate();
+            if(EmployeeAutomation){
+                //Do employee Automation
+            }
+            else{
+                //gets the ID of all employees selected, and adds them all into the employeerental JOIN table in DB
+                for(int i = 0 ; i < SelectedEmployees.size() ; i++){
+                    String FullName = SelectedEmployees.get(i);
+                    int iend2 = FullName.indexOf(' ');
+                        String EmpFirstName = FullName.substring(0,iend2);
+                        FullName = FullName.substring(iend2+1);
+                        String EmpLastName = FullName;
+
+                    PreparedStatement stmt = con.prepareStatement("SELECT id FROM employee WHERE First_Name='"+EmpFirstName+"' AND Last_Name='"+EmpLastName+"'");
+                    ResultSet rs = stmt.executeQuery();
+                    rs.next();
+                    int EmployeeID = rs.getInt(1);
+                    stmt = con.prepareStatement("INSERT INTO employeerental VALUES(?,?)");
+                    stmt.setInt(1, EmployeeID);
+                    stmt.setInt(2, ItemID);
+                    stmt.executeUpdate();
+                }
             }
             PreparedStatement stmt = con.prepareStatement("SELECT id FROM customer WHERE First_Name='"+FirstName+"' AND Last_Name='"+LastName+"'");
             ResultSet rs = stmt.executeQuery();
             rs.next();
             int CustomerID = rs.getInt(1);
-            
-            java.sql.Date RentalDateSQL = new java.sql.Date(RentalDate.getTime());
-            java.sql.Date ReturnDateSQL = new java.sql.Date(ReturnDate.getTime());
 
             int num = DBMethods.addRentalRecord(ItemID, CustomerID, RentalType, RentalDateSQL, ReturnDateSQL, note);
             
@@ -246,13 +290,18 @@ public class AddRental extends  javax.swing.JFrame {
     private JLabel TitleLabel;
     private JLabel CustomerPresetLabel;
     private JLabel EmployeeLabel;
+    private JLabel RentalDateLabel;
+    private JLabel ReturnDateLabel;
     private JComboBox<String> RentalTypeTF;
     private JTextArea NotesTF;
     private JComboBox<String> CustomerPresetTF;
+    private JTextField RentalDateTF;
+    private JTextField ReturnDateTF;
     private JButton CreateNewPresetBtn;
     private JButton AddItemBtn;
     private JButton CancelBtn;
     private JScrollPane jScrollPane;
+    
     
 
 }
