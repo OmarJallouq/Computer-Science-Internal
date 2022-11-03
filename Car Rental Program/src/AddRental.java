@@ -26,7 +26,8 @@ public class AddRental extends  javax.swing.JFrame {
             ResultSet rs = DBMethods.getAllCustomer();
             ResultSet rs2 = DBMethods.getAllEmployee();
             ItemID = DBMethods.getRentalMaxID()+1;
-            
+
+            modelList.addElement("No Driver");             
             modelList.addElement("Choose for Me!");
             while(rs2.next()){
                 modelList.addElement(rs2.getString(3)+" "+rs2.getString(4));
@@ -238,6 +239,17 @@ public class AddRental extends  javax.swing.JFrame {
                 //gets the ID of all employees selected, and adds them all into the employeerental JOIN table in DB
                 for(int i = 0 ; i < SelectedEmployees.size() ; i++){
                     String FullName = SelectedEmployees.get(i);
+
+                    if ( FullName == "No Driver" ) {
+                        break;
+                    }
+
+                    if ( FullName == "Choose for Me!" ) {
+                        //TODO make this, my guy
+
+                        break;
+                    }
+
                     int iend2 = FullName.indexOf(' ');
                         String EmpFirstName = FullName.substring(0,iend2);
                         FullName = FullName.substring(iend2+1);
@@ -253,6 +265,7 @@ public class AddRental extends  javax.swing.JFrame {
                     stmt.executeUpdate();
                 }
             }
+
             PreparedStatement stmt = con.prepareStatement("SELECT id FROM customer WHERE First_Name='"+FirstName+"' AND Last_Name='"+LastName+"'");
             ResultSet rs = stmt.executeQuery();
             rs.next();
