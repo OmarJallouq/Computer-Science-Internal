@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 
@@ -225,30 +225,97 @@ public class AddRental extends  javax.swing.JFrame {
             List<String> SelectedEmployees = EmployeeList.getSelectedValuesList();
 
             Boolean EmployeeAutomation = false;
+            Boolean NoDriver = false;
             for(int i = 0 ; i < SelectedEmployees.size() ; i++){
                 if(SelectedEmployees.get(i) == "Choose for Me!"){
                     EmployeeAutomation = true;
+                    break;
+                }
+                else if(SelectedEmployees.get(i) == "No Driver"){
+                    NoDriver = true;
                     break;
                 }
             }
 
             if(EmployeeAutomation){
                 //Do employee Automation
+
+                PreparedStatement stmtGetAllEmployees = con.prepareStatement("SELECT * from employee WHERE role = 'Employee'");
+                ResultSet allEmployees = stmtGetAllEmployees.executeQuery();
+                List<Integer> availableDrivers=new ArrayList<Integer>();
+                int leastTasks = 2147483647;
+                int chosenEmployee = -1;
+
+                //Returns a list of all of the employees that are free during that time frame
+                while(allEmployees.next()){
+                    int EmployeeID = allEmployees.getInt(1);
+                    PreparedStatement stmtGetDatesForEmployee = con.prepareStatement("SELECT Rental_Date, Return_Date FROM car_rental_db.employeerental JOIN rental WHERE rental.id = employeerental.rentalID AND employeerental.employeeID = ?");
+                    stmtGetDatesForEmployee.setInt(1, EmployeeID);
+                    ResultSet IntervalsRS = stmtGetDatesForEmployee.executeQuery();
+
+                    Date[][] Intervals = new Date[3][2];
+                    Intervals[1][0] = RentalDateSQL;
+                    Intervals[1][1] = ReturnDateSQL;
+
+                    boolean DoThis = true;
+                        Intervals[0][0] = new Date(Long.MIN_VALUE);
+                        Intervals[0][1] = new Date(Long.MIN_VALUE);
+                        Intervals[2][0] = new Date(Long.MAX_VALUE);
+                        Intervals[2][1] = new Date(Long.MAX_VALUE);
+
+
+                    if(DoThis){
+                        while(IntervalsRS.next()){
+                            if((IntervalsRS.getDate(1)).compareTo(RentalDateSQL) < 0){
+                                Intervals[0][0] = IntervalsRS.getDate(1);
+                                Intervals[0][1] = IntervalsRS.getDate(2);
+                            }
+                            else{
+                                Intervals[2][0] = IntervalsRS.getDate(1);
+                                Intervals[2][1] = IntervalsRS.getDate(2);
+                                break;
+                            }
+                        };
+
+                    }
+
+                    //If employee available during time slot, count how many tasks and set minimum appropriately
+                    if(!((Intervals[1][1].compareTo(Intervals[0][0]) >= 0) && (Intervals[0][1].compareTo(Intervals[1][0]) >= 0))){
+                        if(!((Intervals[2][1].compareTo(Intervals[1][0]) >= 0) && (Intervals[1][1].compareTo(Intervals[2][0]) >= 0))){
+                            availableDrivers.add(EmployeeID);
+                            PreparedStatement stmtGetEmployeeRentals = con.prepareStatement("SELECT * FROM employeerental WHERE employeeID = ?");
+                            stmtGetEmployeeRentals.setInt(1, EmployeeID);
+                            ResultSet EmployeeTasksRS = stmtGetEmployeeRentals.executeQuery();
+
+                            int count = 0;
+                            //count the tasks
+                            while(EmployeeTasksRS.next()){
+                                count++;
+                            }
+
+                            //decide if they has the least tasks
+                            if (count <= leastTasks){
+                                chosenEmployee = EmployeeID;
+                            }
+                        }
+                    }
+                }
+
+                //add that employee to the employeerental join table
+
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO employeerental VALUES(?,?)");
+                stmt.setInt(1, chosenEmployee);
+                stmt.setInt(2, ItemID);
+                stmt.executeUpdate();
+            }
+            else if(NoDriver){
+                //nothing just skips
             }
             else{
                 //gets the ID of all employees selected, and adds them all into the employeerental JOIN table in DB
                 for(int i = 0 ; i < SelectedEmployees.size() ; i++){
                     String FullName = SelectedEmployees.get(i);
 
-                    if ( FullName == "No Driver" ) {
-                        break;
-                    }
-
-                    if ( FullName == "Choose for Me!" ) {
-                        //TODO make this, my guy
-
-                        break;
-                    }
 
                     int iend2 = FullName.indexOf(' ');
                         String EmpFirstName = FullName.substring(0,iend2);
