@@ -186,7 +186,7 @@ function calcWakeUp(){
 
     // it is currently __:__ correct? confirmation box
 
-    //time to sleep
+    //time to sleep 
     nMinute += 15;
 
     //error checking, not more than max values
