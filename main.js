@@ -184,7 +184,7 @@ function calcWakeUp(){
     let nMinute = f.getMinutes();
     let list = document.getElementById("timeList");
 
-    // it is currently __:__ correct? confirmation box
+    // it is currently __:__ correct? confirmation box DIDNT DO THIS
  
     //time to sleep 
     nMinute += 15;
